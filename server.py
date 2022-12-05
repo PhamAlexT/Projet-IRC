@@ -6,7 +6,7 @@ HOST = "127.0.0.1"
 PORT = 50000 if len(sys.argv) == 1 else int(sys.argv[1])
 nclients = 100
 
-client_list = []
+channel_list = []
 
 def recv(connection):
     while True:
@@ -18,6 +18,25 @@ def send(connection):
         msg = input()
         msg = msg.encode('utf-8')
         connection.send(msg)
+
+def handle_msg(msg):
+    instr = msg.split(" ")
+    match msg:
+            case "/away": 
+                away(instr)
+            case "/help": 
+                help()
+            case "/invite":
+                invite(instr)
+            case "/join":
+                join(instr)
+            case "/list":
+                list()
+            case "/msg":
+                msg(instr)
+            case "/names":
+                names(instr)
+
 
 def new_connection(sock):
     while True:
