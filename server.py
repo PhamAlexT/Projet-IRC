@@ -188,8 +188,24 @@ def handle_msg(msg,connection):
                 else:
                     print("...")
             case "/names":
-                pass
+                channel = None
+                try:
+                    channel = instr[1]
+                except:
+                    pass
+                to_send = "List of users:"
+                index = None
+                for i,c in enumerate(channels_list):
+                        if c["name"] == channel:
+                            index = i
 
+                if channel != None:
+                    for user in channels_list[index]["participants"]:
+                        to_send+=f"\n_{user}"
+                else:
+                    for user in get_users():
+                        to_send+=f"\n_{user}"
+                connection.send(create_msg(to_send,"Serveur"))
             case "/fp": #hidden command to register nickname/connection
                 try:
                     if instr[1] not in get_users():
@@ -205,7 +221,7 @@ def handle_msg(msg,connection):
                 except:
                     sys.exit("problem when user joined")
             case _:
-                print("default, weird...i",instr)
+                pass
 
 
 def recv(connection):
