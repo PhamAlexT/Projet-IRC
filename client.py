@@ -17,8 +17,10 @@ class Client:
     def recv(self, connection):
         while True:
             msg = connection.recv(1024)
-            print(msg.decode('utf-8'))
-            self.controller.display_msg(msg.decode('utf-8'))
+            d = pickle.loads(msg)
+            msg,author = d["payload"], d["author"]
+            #print(msg.decode('utf-8'))
+            self.controller.display_msg(msg,author)
 
     def send(self,connection):
         while True:

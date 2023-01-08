@@ -1,8 +1,10 @@
-from tkinter import Frame,Tk, Label,StringVar,END,BOTTOM,TOP
+from tkinter import Frame,Tk, Label,StringVar,END
 from tkinter import ttk
 import sys
 import random
 from client import Client
+from base.utils import *
+
 
 #The window
 root = Tk()
@@ -18,6 +20,7 @@ left_frame.config(bg="red")
 msg_display = Frame(root,width=900,height=400)
 msg_display.grid(row=0,column=1,padx=40, pady=20)
 msg_display.config(bg="yellow")
+
 #Message input area (bottom right)
 msg_var = StringVar()
 msg_area = ttk.Entry(root,textvariable=msg_var,width=100)
@@ -36,9 +39,10 @@ class ClientController():
     def __init__(self,msg_display):
         self.msg_display = msg_display
 
-    def display_msg(self,message):
-        msg = f"Vous avez reçu:\n {message}"
-        to_display = Label(self.msg_display,text=msg).pack(side=TOP)
+    def display_msg(self,message,author):
+        msg_headers = f"Vous avez reçu le {formated_datetime()} de {author}"
+        headers_label = Label(self.msg_display,text=msg_headers,justify="left").pack(side="top")
+        msg_label = Label(self.msg_display,text=message,justify="left").pack(side="top")
 
 
 if __name__ == "__main__":
@@ -54,8 +58,10 @@ if __name__ == "__main__":
 
     def sender(e):
         m = msg_area.get()
-        msg = msg = f"Vous avez envoyé:\n {m}"
-        to_display = Label(msg_display,text=msg).pack(side=TOP)
+        msg_headers = f"Vous avez envoyé le {formated_datetime()}"
+
+        headers_label = Label(msg_display,text=msg_headers,justify="left").pack(side="top")
+        to_display = Label(msg_display,text=m,justify="left").pack(side="top")
         client.send_msg(m)
 
         msg_area.delete(0, END)
