@@ -155,7 +155,11 @@ def handle_msg(msg,connection):
                         channels_list[index]["participants"].append(get_nickname(connection))
 
             case "/list":
-                pass
+                to_send = "List of channels"
+                for channel in [c["name"] for c in channels_list]:
+                    to_send+=f"\n_{channel}"
+
+                connection.send(create_msg(to_send,"Server"))
             case "/msg":
                 author = get_nickname(connection)
                 if instr[1][0] == "#":
