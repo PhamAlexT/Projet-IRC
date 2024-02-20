@@ -2,7 +2,6 @@ import sys
 import socket
 import threading
 import pickle
-from base.message import *
 
 
 HOST = "127.0.0.1"
@@ -33,9 +32,10 @@ def get_users():
         l.append(t["nickname"])
     return l
 
+
 def get_status_user(nickname):
     index = None
-    for i,t in enumerate(users_list):
+    for i, t in enumerate(users_list):
         if t["nickname"] == nickname:
             index = i
 
@@ -44,9 +44,10 @@ def get_status_user(nickname):
 
     return None
 
+
 def get_away_msg_user(nickname):
     index = None
-    for i,t in enumerate(users_list):
+    for i, t in enumerate(users_list):
         if t["nickname"] == nickname:
             index = i
 
@@ -54,6 +55,7 @@ def get_away_msg_user(nickname):
         return users_list[index]["away_msg"]
 
     return None
+
 
 def get_connection_user(nickname):
     index = None
@@ -66,9 +68,10 @@ def get_connection_user(nickname):
 
     return None
 
+
 def get_nickname(connection):
     index = None
-    for i,t in enumerate(users_list):
+    for i, t in enumerate(users_list):
         print("in loop", t["nickname"])
         if t["connection"] == connection:
             index = i
@@ -76,6 +79,7 @@ def get_nickname(connection):
         return users_list[index]["nickname"]
 
     return None
+
 
 """
 This function will return a dict that every client knows how to interpret it
@@ -91,6 +95,7 @@ def create_msg(payload,author):
         }
     print("to be serialized",d)
     return pickle.dumps(d)
+
 
 def handle_msg(msg,connection):
     instr = msg.split(" ")
@@ -231,13 +236,15 @@ def handle_msg(msg,connection):
 def recv(connection):
     while True:
         msg = connection.recv(1024)
-        handle_msg(msg.decode('utf-8'),connection)
+        handle_msg(msg.decode('utf-8'), connection)
+
 
 def send(connection):
     while True:
         msg = input()
         msg = msg.encode('utf-8')
         connection.send(msg)
+
 
 def new_connection(sock):
     while True:
@@ -248,6 +255,7 @@ def new_connection(sock):
         tr.start()
         ts.start()
 
+
 def serve():
     s = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR, 1)
@@ -256,6 +264,7 @@ def serve():
     print(f"----waiting clients on port : {PORT}----")
     s.listen(nclients)
     new_connection(s)
+
 
 if __name__ == "__main__":
     serve()

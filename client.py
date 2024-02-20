@@ -1,12 +1,10 @@
-import sys
-import socket 
+import socket
 import threading
-import random
-from base.user import User
 import pickle
-from base.message import process_msg
+
 HOST = "127.0.0.1"
 PORT = 50000
+
 
 class Client:
     def __init__(self,nickname,controller):
